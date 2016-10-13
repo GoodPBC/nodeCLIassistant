@@ -10,6 +10,9 @@ var command = process.argv[2];
 var userInput = process.argv[3];
 var nodeArgs = process.argv;
 
+var movieTitle;
+var songTitle;
+
 
 
 
@@ -73,8 +76,30 @@ function tweets() {
 //===================================== BEGIN "spotify-this-song" command logic  =====================================
 
 function songs() {
-	console.log('G"-N-"R');
+	  for (var i = 3; i < nodeArgs.length; i++) {
+	  		songTitle = "";
+        if (i >= 3 && i < nodeArgs.length) {
+            songTitle = songTitle + "+" + nodeArgs[i];
+            console.log("SONG TITLE IF == " + songTitle);
+        }
+
+        else {
+            songTitle = songTitle + nodeArgs[i];
+            console.log("SONG TITLE ELSE  == " + songTitle);
+        }
+    }
+
+    spotify.search({ type: 'track', query: songTitle }, function(err, data) {
+    if ( err ) {
+        console.log('Error occurred: ' + err);
+        return;
+    }
+ 
+        console.log(data); 
+});
+    console.log('G"-N-"R');
 }
+
 //=====================================  END  "spotify-this-song" command logic  =====================================
 //=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/
 //=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/
@@ -82,43 +107,46 @@ function songs() {
 //======================================== BEGIN "movie-this" command logic  ========================================
 
 function movies() {
-//console.log('The Toy');
-	
-	
-	for (var i = 3; i < nodeArgs.length; i++) {
-		
-		if (i > 3 && i < nodeArgs.length) {
-			movieTitle = movieTitle + "+" + nodeArgs[i];
-		}
+ //console.log('The Toy');
+ 	
+ 	
+ 	for (var i = 3; i < nodeArgs.length; i++) {
 
-		else {
-			movieTitle = movieTitle + nodeArgs[i];
-		}
-	}
-	var queryURL = 'http://www.omdbapi.com/?t=' + movieTitle +'&tomatoes=true&y=&plot=short&r=json';
-	
-	//these are so we can visualize our URL & user Input for debugging
-	console.log(queryURL);
-	console.log(movieTitle);
+ 		var movieTitle = ""; 
+ 		console.log()
 
-	request(queryURL, function(error, response, body) {
-
-		if (!error && response.statusCode == 200) {
-			console.log("Title: " + JSON.parse(body)["Title"]);	// Movie title
-			console.log("Released: " + JSON.parse(body)["Year"]);	// Movie Release Year
-			console.log("IMDB Rating: " + JSON.parse(body)["imdbRating"]);	// IMDB rating
-			console.log("Country of Production: " + JSON.parse(body)["Country"]); //Production Country
-			console.log("Movie Language: " + JSON.parse(body)["Language"]);	//Movie Language
-			console.log("Plot: " + JSON.parse(body)["Plot"]); //Movie Plot
-			console.log("Cast: " + JSON.parse(body)["Actors"]);	//Movie Cast
-			console.log("Rotten Tomatoes Rating: " + JSON.parse(body)["tomatoRating"]); //Rotten Tomatoes Rating
-			console.log("Rotten tomatoes URL: " + JSON.parse(body)["tomatoURL"]); //Rotten tomatoes URL
-		}
-		else {
-
-		}
-	});
-}
+ 		if (i >= 3 && i < nodeArgs.length) {
+ 			movieTitle = movieTitle + "+" + nodeArgs[i];
+ 		}
+ 
+ 		else {
+ 			movieTitle = movieTitle + nodeArgs[i];
+ 		}
+ 	}
+ 	var queryURL = 'http://www.omdbapi.com/?t=' + movieTitle +'&tomatoes=true&y=&plot=short&r=json';
+ 	
+ 	//these are so we can visualize our URL & user Input for debugging
+ 	console.log(queryURL);
+ 	console.log(movieTitle);
+ 
+ 	request(queryURL, function(error, response, body) {
+ 
+ 		if (!error && response.statusCode == 200) {
+ 			console.log("Title: " + JSON.parse(body)["Title"]);	// Movie title
+ 			console.log("Released: " + JSON.parse(body)["Year"]);	// Movie Release Year
+ 			console.log("IMDB Rating: " + JSON.parse(body)["imdbRating"]);	// IMDB rating
+ 			console.log("Country of Production: " + JSON.parse(body)["Country"]); //Production Country
+ 			console.log("Movie Language: " + JSON.parse(body)["Language"]);	//Movie Language
+ 			console.log("Plot: " + JSON.parse(body)["Plot"]); //Movie Plot
+ 			console.log("Cast: " + JSON.parse(body)["Actors"]);	//Movie Cast
+ 			console.log("Rotten Tomatoes Rating: " + JSON.parse(body)["tomatoRating"]); //Rotten Tomatoes Rating
+ 			console.log("Rotten tomatoes URL: " + JSON.parse(body)["tomatoURL"]); //Rotten tomatoes URL
+ 		}
+ 		else {
+ 
+ 		}
+ 	});
+ }
 //===================================== END "movie-this" command logic  =====================================
 //=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/
 //=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/=\|/
